@@ -1,0 +1,3 @@
+/* petals.css - petal look handled in base.css (multicolor confetti drift). */
+#petals-layer { will-change: transform; }
+.petal { will-change: transform; }

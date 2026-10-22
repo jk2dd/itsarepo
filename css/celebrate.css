@@ -1,0 +1,788 @@
+/* celebrate.css — §Celebrate: "the whole rainbow, together."
+   Every voice of the spectrum on one screen; the emotional climax. */
+
+.celebrate {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px var(--safe-left) 28px var(--safe-right);
+  gap: 16px;
+  height: 100%;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  isolation: isolate;
+}
+
+.cel-party-header {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  padding: 4px 10px 0;
+}
+
+.cel-party-overline {
+  display: inline-block;
+  margin-bottom: 3px;
+  color: var(--i-orange);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+}
+
+.cel-party-deck {
+  max-width: 350px;
+  margin: 0 auto;
+  color: var(--text-soft);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.cel-heading {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 8vw, 42px);
+  text-align: center;
+  /* adjacent-hue gradient text — pink → red مع تأثير ظل نصي ناعم */
+  background: linear-gradient(135deg, var(--c-pink) 0%, var(--c-red) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: .03em;
+  filter: drop-shadow(0 2px 8px rgba(232, 67, 147, 0.2));
+  margin: 0 0 5px;
+}
+
+/* Rainbow aurora behind the final message — تدوران مخروطي ناعم وعميق */
+.cel-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+.cel-aurora::before {
+  content: '';
+  position: absolute;
+  inset: -35%;
+  background: conic-gradient(from 0deg,
+    var(--c-red), var(--c-orange), var(--c-yellow), var(--c-green),
+    var(--c-cyan), var(--c-blue), var(--c-violet), var(--c-pink), var(--c-red));
+  opacity: .14;
+  filter: blur(24px);
+  animation: auroraRotate 20s linear infinite;
+  border-radius: inherit;
+}
+@keyframes auroraRotate {
+  to { transform: rotate(360deg); }
+}
+
+.cel-locked, .cel-main {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.cel-locked {
+  background: var(--t-violet);
+  border: 2px dashed var(--c-violet);
+  padding: 28px 20px;
+  border-radius: var(--radius);
+  text-align: center;
+  box-shadow: 0 12px 32px -8px rgba(116, 79, 168, 0.15);
+  backdrop-filter: blur(6px);
+}
+
+.lock { 
+  font-size: 48px; 
+  margin-bottom: 8px; 
+  filter: grayscale(.1);
+  animation: lockBounce 3s ease-in-out infinite;
+}
+@keyframes lockBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.lock-text { 
+  font-size: 17px; 
+  color: var(--i-violet); 
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+.cel-countdown {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--i-yellow);
+  margin-top: 10px;
+  background: var(--t-yellow);
+  border: 2px solid var(--c-yellow);
+  border-radius: 999px;
+  padding: 6px 18px;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(245, 218, 83, .35);
+  animation: glow 2.2s ease-in-out infinite;
+}
+@keyframes glow {
+  0%, 100% { transform: scale(1); box-shadow: 0 10px 25px rgba(245, 218, 83, .35); }
+  50% { transform: scale(1.03); box-shadow: 0 14px 32px rgba(245, 218, 83, .55); }
+}
+
+/* Cake + candles — كعكة احتفالية مع شموع تتفاعل بسلاسة */
+.cel-cake-wrap { 
+  width: 100%; 
+  display: flex; 
+  justify-content: center;
+  padding: 4px 0;
+}
+.cel-cake { 
+  width: min(88vw, 320px); 
+  height: auto; 
+  display: block; 
+  overflow: visible;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.08));
+}
+.cel-candle { cursor: pointer; transition: transform 0.2s ease; }
+.cel-candle:hover { transform: scale(1.05); }
+.cel-candle.blown {
+  cursor: default;
+}
+.cel-candle.blown .cel-flame {
+  animation: blowOut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: 50% 100%;
+}
+@keyframes blowOut {
+  to { transform: scale(0) translateY(-16px); opacity: 0; }
+}
+
+/* Candle flame flicker */
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) translateY(0); opacity: 1; }
+  25% { transform: scale(1.08) translateY(-2px); opacity: 0.95; }
+  50% { transform: scale(0.92) translateY(1px); opacity: 1; }
+  75% { transform: scale(1.12) translateY(-1.5px); opacity: 0.9; }
+}
+.cel-flame {
+  animation: flameFlicker 2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+/* ---- Room "lights off" — the whole show starts when the song plays ---- */
+
+/* Fixed dark curtain + a warm pool of candle light on top of the cake. */
+.cel-dim {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.cel-dim::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse 48% 42% at 50% 39%, rgba(92, 53, 43, .16), transparent 70%),
+    radial-gradient(ellipse at 50% 40%, rgba(22, 13, 26, .72), rgba(13, 9, 19, .94) 78%),
+    #130e18;
+  transition: opacity 1.1s ease .08s;
+}
+.section-celebrate.lights-off .cel-dim::before { opacity: 1; }
+/* The candle glow arrives a beat AFTER the darkness sets. */
+.cel-dim::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 34%;
+  width: min(90vw, 670px); height: min(68vw, 520px);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  background: radial-gradient(ellipse 44% 38% at 50% 51%, rgba(255, 224, 156, .38), rgba(255, 187, 111, .15) 48%, rgba(233, 145, 94, .05) 68%, transparent 78%);
+  filter: blur(11px);
+  transition: opacity 1.5s ease .7s;
+}
+.section-celebrate.lights-off .cel-dim::after { opacity: 1; }
+.section-celebrate.candles-out .cel-dim::after { opacity: .5; }
+
+/* Their wood-lit text on dark */
+.section-celebrate.lights-off .cel-msg { color: #FFF2CF; text-shadow: 0 0 18px rgba(255, 220, 140, .4); }
+.section-celebrate.lights-off .cel-log { color: #E4D4BC; }
+.section-celebrate.lights-off .cel-heading {
+  background: linear-gradient(135deg, #FFE4C4 0%, #F7C7DC 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 2px 10px rgba(255, 235, 170, .3));
+}
+.section-celebrate.lights-off .cel-party-overline { color: #F4D8A8; }
+.section-celebrate.lights-off .cel-party-deck { color: #D9C8D3; }
+.section-celebrate.lights-off .cel-kicker { color: var(--i-yellow); }
+.section-celebrate.main-song-playing .cel-aurora::before {
+  opacity: .07;
+  animation-play-state: paused;
+}
+
+/* ---- Candle light graphics ---- */
+.cel-cake-wrap { position: relative; }
+.cel-cake-wrap::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 42%;
+  width: 82%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 223, 155, .32), rgba(255, 193, 121, .13) 42%, transparent 72%);
+  opacity: 0;
+  filter: blur(15px);
+  transform: translate(-50%, -50%) scale(.82);
+  transition: opacity 1.2s ease .4s, transform 1.8s cubic-bezier(.2,.75,.25,1) .35s;
+  pointer-events: none;
+}
+.cel-cake-wrap::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: 4%;
+  width: 76%;
+  height: 11%;
+  border-radius: 50%;
+  background: rgba(255, 193, 121, .2);
+  opacity: 0;
+  filter: blur(20px);
+  transform: translateX(-50%);
+  transition: opacity 1s ease .6s;
+  pointer-events: none;
+}
+.cel-cake { position: relative; z-index: 1; }
+.section-celebrate.lights-off .cel-cake-wrap::before,
+.section-celebrate.lights-off .cel-cake-wrap::after { opacity: 1; }
+.section-celebrate.lights-off .cel-cake-wrap::before { transform: translate(-50%, -50%) scale(1); }
+.section-celebrate.candles-out .cel-cake-wrap::before,
+.section-celebrate.candles-out .cel-cake-wrap::after { opacity: .16; }
+
+/* Cone, halo and core: the actual "light from the candles" */
+/* Cone, halo and core: the actual "light from the candles".
+   Keyframes animate transform only; opacity stays a cascade-controlled value. */
+.cel-cone { opacity: .9; animation: coneBreath 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes coneBreath {
+  0%, 100% { transform: scaleY(1) scaleX(1); }
+  50% { transform: scaleY(1.12) scaleX(1.05); }
+}
+.cel-halo {
+  opacity: .85;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: haloPulse 2s ease-in-out infinite;
+}
+@keyframes haloPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+}
+.cel-core { opacity: .8; animation: corePulse 1.7s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 50%; }
+@keyframes corePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+/* Fireflies drifting up from the wicks */
+.cel-mote { opacity: 0; animation: moteRise 3.2s linear infinite; }
+@keyframes moteRise {
+  0% { transform: translateY(0); opacity: 0; }
+  18% { opacity: .85; }
+  100% { transform: translateY(-42px); opacity: 0; }
+}
+/* Brighter show when the room is dark… */
+.section-celebrate.lights-off .cel-halo { opacity: 1; animation-duration: 1.3s; }
+.section-celebrate.lights-off .cel-cone { opacity: 1; }
+.section-celebrate.lights-off .cel-flame { animation-duration: .9s; }
+.section-celebrate.lights-off .cel-amb { opacity: .8; }
+.section-celebrate.lights-off .cel-rays { opacity: .34; animation-duration: 16s; }
+.section-celebrate.lights-off .cel-spark { opacity: 1; }
+/* …and dimmer once every candle is out */
+.section-celebrate.candles-out .cel-halo, .section-celebrate.candles-out .cel-cone { opacity: 0; }
+.section-celebrate.candles-out .cel-amb { opacity: .1; }
+.section-celebrate.candles-out .cel-rays { opacity: 0; }
+.section-celebrate.candles-out .cel-spark { opacity: .25; animation: none; }
+/* Blown candles lose their whole light package */
+.cel-light, .cel-motes { transition: opacity .45s ease; }
+.cel-candle.blown .cel-light, .cel-candle.blown .cel-motes { opacity: 0; visibility: hidden; }
+
+/* Light shafts + ambient ellipse (defaults are subtle in daylight) */
+.cel-rays { opacity: .1; animation: raysSway 24s ease-in-out infinite alternate; transform-box: view-box; transform-origin: 50% 36.2%; }
+@keyframes raysSway {
+  from { transform: rotate(-6deg); }
+  to { transform: rotate(6deg); }
+}
+.cel-amb { opacity: .42; transition: opacity .8s ease; }
+.cel-spark { opacity: .35; animation: sparkTwinkle 3.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 50%; }
+@keyframes sparkTwinkle {
+  0%, 100% { opacity: .25; transform: scale(.8); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+
+/* Disco details belong to the high-energy sub-party set. */
+.cel-disco {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 52px;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity .9s ease .9s;
+}
+.section-celebrate.sub-party-playing .cel-disco { opacity: 1; }
+.cel-disco-spin { transform-box: fill-box; transform-origin: 50% 50%; }
+.section-celebrate.sub-party-playing .cel-disco-spin { animation: discoSpin 3.4s linear infinite; }
+@keyframes discoSpin { to { transform: rotate(360deg); } }
+.cel-disco-spark { opacity: 0; transform-box: fill-box; transform-origin: 50% 50%; }
+.section-celebrate.sub-party-playing .cel-disco-spark { animation: discoBlink 1.6s ease-in-out infinite; }
+.section-celebrate.sub-party-playing .cel-disco-spark:last-of-type { animation-delay: .8s; }
+@keyframes discoBlink {
+  0%, 100% { opacity: 0; transform: scale(.6); }
+  25% { opacity: .9; transform: scale(1); }
+  60% { opacity: 0; transform: scale(1.3); }
+}
+
+/* Dancers get disco-lit in the dark */
+@keyframes discoHue {
+  from { filter: hue-rotate(0deg) drop-shadow(0 0 10px rgba(255, 231, 172, .35)); }
+  to { filter: hue-rotate(340deg) drop-shadow(0 0 10px rgba(255, 231, 172, .35)); }
+}
+.section-celebrate.sub-party-playing .cel-dancer {
+  opacity: .8;
+  visibility: visible;
+  animation-name: dance, discoHue;
+  animation-duration: 4s, 7s;
+  animation-timing-function: ease-in-out, linear;
+  animation-iteration-count: infinite, infinite;
+}
+
+/* Cake trembles with joy when the last flame goes */
+.section-celebrate.candles-out .cel-cake { animation: cakeShake .6s ease; }
+@keyframes cakeShake {
+  0%, 100% { transform: rotate(0) translate(0, 0); }
+  20% { transform: rotate(-1.2deg) translate(-2px, 1px); }
+  40% { transform: rotate(1.2deg) translate(2px, -1px); }
+  60% { transform: rotate(-1deg) translate(-1px, -1px); }
+  80% { transform: rotate(.8deg) translate(1px, 1px); }
+}
+
+/* Funny chatter line */
+.cel-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--i-orange);
+  text-align: center;
+}
+.cel-log {
+  min-height: 20px;
+  font-size: 13px;
+  color: var(--text-soft);
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: .01em;
+  padding: 0 12px;
+}
+.cel-log.pop { animation: logPop .4s cubic-bezier(.16, 1, .3, 1); }
+@keyframes logPop {
+  0% { transform: translateY(3px) scale(.94); opacity: .2; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Relight — bring the flames back for one more wish */
+.cel-btn.cel-relight {
+  background: var(--t-yellow);
+  border: 2px solid var(--c-yellow);
+  color: var(--i-yellow);
+}
+
+/* Bunting sway */
+@keyframes buntingSway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50% { transform: rotate(1.5deg); }
+}
+.cel-bunting { transform-box: fill-box; transform-origin: 50% 0%; animation: buntingSway 5s ease-in-out infinite; }
+
+.cel-msg {
+  font-family: var(--font-display);
+  font-size: 19px;
+  color: var(--text);
+  font-weight: 700;
+  text-align: center;
+  min-height: 28px;
+  line-height: 1.4;
+  padding: 0 8px;
+}
+
+.cel-music {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  width: min(100%, 420px);
+}
+
+.cel-track-picker-wrap {
+  flex: 1 0 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 7px 11px 7px 14px;
+  border: 1px dashed rgba(175, 128, 127, .48);
+  border-radius: 17px;
+  background: rgba(255, 251, 242, .94);
+  box-shadow: 0 5px 16px rgba(62, 38, 48, .08), inset 0 1px rgba(255, 255, 255, .9);
+}
+
+.cel-track-picker-label {
+  color: var(--i-orange);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cel-track-picker {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 28px 8px 10px;
+  border: 1px solid rgba(175, 128, 127, .34);
+  border-radius: 11px;
+  background: #fffdf7;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cel-track-picker:focus-visible {
+  outline: 3px solid rgba(232, 117, 143, .35);
+  outline-offset: 2px;
+}
+
+.section-celebrate.lights-off .cel-track-picker-wrap {
+  border-color: rgba(246, 211, 180, .42);
+  background: rgba(44, 31, 40, .9);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, .18), inset 0 1px rgba(255, 255, 255, .08);
+}
+.section-celebrate.lights-off .cel-track-picker-label { color: #F4D8A8; }
+.section-celebrate.lights-off .cel-track-picker {
+  border-color: rgba(246, 211, 180, .45);
+  background: #fff8ec;
+  color: #392d35;
+}
+
+.cel-btn {
+  min-width: 48px;
+  border-radius: 24px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.cel-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+.cel-btn:active { transform: translateY(1px) scale(0.96); }
+.cel-btn#cel-play { 
+  background: var(--t-orange); 
+  border: 2px solid var(--c-orange); 
+  color: var(--i-orange); 
+}
+.cel-btn.cel-mute { 
+  background: #fff; 
+  border: 2px solid var(--c-cyan); 
+  color: var(--i-cyan); 
+}
+
+.cel-romance-gifs {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .7s ease;
+}
+.section-celebrate.main-song-playing .cel-romance-gifs {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.cel-romance-gif {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+.section-celebrate.main-song-playing .cel-romance-gif {
+  will-change: transform;
+}
+.cel-romance-gif img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cel-romance-gif--petals {
+  left: calc(50% - 250px);
+  top: 27%;
+  width: 146px;
+  aspect-ratio: 1;
+  filter: drop-shadow(0 5px 8px rgba(191, 93, 116, .13));
+}
+.cel-romance-gif--petals img {
+  object-fit: contain;
+}
+.section-celebrate.main-song-playing .cel-romance-gif--petals {
+  animation: petalWhisper 8s ease-in-out infinite;
+}
+.cel-romance-gif--rose {
+  right: calc(50% - 236px);
+  top: 51%;
+  width: 86px;
+  aspect-ratio: 1;
+  padding: 5px;
+  border: 1px solid rgba(201, 133, 139, .55);
+  border-radius: 50%;
+  background: rgba(255, 247, 239, .9);
+  box-shadow: 0 7px 18px rgba(74, 47, 52, .17), inset 0 0 0 2px rgba(255, 255, 255, .75);
+  filter: saturate(.88);
+}
+.cel-romance-gif--rose img {
+  object-fit: cover;
+  border-radius: 50%;
+}
+.section-celebrate.main-song-playing .cel-romance-gif--rose {
+  animation: keepsakeSway 8.5s ease-in-out infinite;
+  animation-delay: -3.2s;
+}
+@keyframes petalWhisper {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+@keyframes keepsakeSway {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-3px) rotate(3deg); }
+}
+
+.cel-cat-dancers {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .42s ease;
+}
+.section-celebrate.sub-party-playing .cel-cat-dancers {
+  opacity: 1;
+  visibility: visible;
+}
+.cel-cat-dancer {
+  --cat-size: 92px;
+  position: absolute;
+  display: block;
+  width: var(--cat-size);
+  aspect-ratio: 1;
+  transform-origin: 50% 90%;
+  filter: drop-shadow(0 6px 9px rgba(31, 19, 30, .23));
+}
+.cel-cat-dancer img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+.cel-cat-dancer--happy { left: calc(50% - 218px); top: 34%; --cat-size: 90px; }
+.cel-cat-dancer--bichi { right: calc(50% - 218px); top: 47%; --cat-size: 96px; }
+.cel-cat-dancer--ikas { left: calc(50% - 204px); top: 66%; --cat-size: 82px; }
+.cel-cat-dancer--party {
+  right: calc(50% - 204px);
+  top: 24%;
+  --cat-size: 112px;
+  aspect-ratio: 16 / 9;
+}
+.section-celebrate.sub-party-playing .cel-cat-dancer {
+  animation: catBoogie 1.8s ease-in-out infinite;
+}
+.cel-cat-dancer--bichi { animation-delay: -.45s !important; }
+.cel-cat-dancer--ikas { animation-delay: -.9s !important; }
+.cel-cat-dancer--party { animation-delay: -1.25s !important; }
+@keyframes catBoogie {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-7px) rotate(4deg); }
+}
+.cel-dancer {
+  position: fixed;
+  z-index: 4;
+  width: 38px;
+  height: 38px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  animation: none;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08));
+}
+.cel-dancer.paused { animation-play-state: paused; }
+@keyframes dance {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(var(--dx), var(--dy)) rotate(8deg); }
+  50% { transform: translate(calc(var(--dx) * -1), 0) rotate(-8deg); }
+  75% { transform: translate(var(--dx), 0) rotate(8deg); }
+}
+.cel-dancer svg { width: 100%; height: 100%; display: block; }
+
+.cel-surprise-card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  text-align: center;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 16px 36px -10px rgba(58, 42, 56, 0.15);
+  position: relative;
+  z-index: 1;
+}
+
+/* washi tape closing the surprise (cyan voice) */
+.cel-surprise-card::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: 100px;
+  height: 20px;
+  border-radius: 4px;
+  background: rgba(83, 229, 245, .55);
+  border: 1px solid rgba(49, 110, 117, .22);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  z-index: 2;
+}
+
+/* full-spectrum confetti ring around the card — حلقة قزحية متوهجة وناعمة */
+.cel-surprise-card::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: calc(var(--radius) + 12px);
+  pointer-events: none;
+  z-index: -1;
+  background: conic-gradient(from 0deg,
+    var(--c-red) 0deg 45deg,
+    var(--c-orange) 45deg 90deg,
+    var(--c-yellow) 90deg 135deg,
+    var(--c-green) 135deg 180deg,
+    var(--c-cyan) 180deg 225deg,
+    var(--c-blue) 225deg 270deg,
+    var(--c-violet) 270deg 315deg,
+    var(--c-pink) 315deg 360deg);
+  opacity: .85;
+  filter: blur(1px);
+}
+
+.cel-surprise-msg { 
+  font-family: var(--font-display); 
+  font-size: 19px; 
+  color: var(--text); 
+  margin-bottom: 14px; 
+  position: relative; 
+  z-index: 1; 
+  line-height: 1.45;
+}
+
+/* Polaroid frame for the surprise photo — إطار بولارويد واقعي وناعم */
+.cel-polaroid {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  box-shadow: 0 12px 28px rgba(58, 42, 56, .16), 0 2px 4px rgba(0, 0, 0, .04);
+  padding: 8px 8px 18px;
+  transform: rotate(var(--r, 0deg));
+  margin: 14px auto 4px;
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.cel-polaroid:hover {
+  transform: rotate(0deg) scale(1.02);
+  box-shadow: 0 16px 36px rgba(58, 42, 56, .22);
+}
+
+.cel-surprise-photo {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 3px;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cel-dancer { animation: none; }
+  .cel-cat-dancer { animation: none !important; }
+  .cel-cat-dancers { transition: none; }
+  .cel-candle.blown .cel-flame { animation: none; opacity: 0; }
+  .cel-btn { transition: none; }
+  .cel-aurora::before { animation: none; filter: none; }
+  .cel-romance-gifs { transition: none; }
+  .cel-romance-gif { animation: none; }
+  .section-celebrate.main-song-playing .cel-romance-gif { will-change: auto; }
+  .cel-countdown { animation: none; }
+  .cel-surprise-card::before { animation: none; transform: none; }
+  .cel-flame { animation: none; }
+  .cel-bunting { animation: none; }
+  .lock { animation: none; }
+  .cel-cone, .cel-halo, .cel-core, .cel-mote, .cel-rays, .cel-spark,
+  .cel-disco-spin, .cel-disco-spark, .cel-cake, .cel-log { animation: none !important; }
+  .cel-dim::before, .cel-dim::after, .cel-cake-wrap::before, .cel-cake-wrap::after { transition: none; }
+  .cel-cake-wrap::before { transform: translate(-50%, -50%); }
+}
+
+@media (max-width: 390px) {
+  .celebrate { gap: 12px; }
+  .cel-main { gap: 12px; }
+  .cel-music { gap: 7px; }
+  .cel-btn { padding: 9px 13px; font-size: 13px; }
+  .cel-track-picker-wrap { gap: 7px; padding: 7px 8px; }
+  .cel-track-picker-label { font-size: 9px; letter-spacing: .08em; }
+  .cel-track-picker { font-size: 12px; }
+}
+
+@media (max-width: 600px) {
+  .cel-romance-gif--petals { width: 92px; left: -8px; top: 31%; }
+  .cel-romance-gif--rose { width: 58px; right: -4px; top: 52%; padding: 3px; }
+  .cel-cat-dancer--happy { left: 0; top: 34%; --cat-size: 76px; }
+  .cel-cat-dancer--bichi { right: 0; top: 47%; --cat-size: 78px; }
+  .cel-cat-dancer--ikas { left: 0; top: 67%; --cat-size: 68px; }
+  .cel-cat-dancer--party { right: 0; top: 24%; --cat-size: 76px; }
+}

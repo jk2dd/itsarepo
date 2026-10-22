@@ -1,0 +1,112 @@
+/* letter.css — §Letter: "the sealed envelope." Calm blue voice, cream paper,
+   washi tape, generous Arabic typesetting. RTL set by the section markup. */
+
+.letter-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 12px var(--safe-left) 12px var(--safe-right);
+  text-align: right;
+}
+.letter-locked, .letter-paper {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 16px;
+  border-radius: var(--radius);
+}
+.letter-locked {
+  background: var(--t-blue);
+  border: 2px dashed var(--c-blue);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+.lock { font-size: 44px; margin-bottom: 6px; filter: grayscale(.2); }
+.lock-text { font-size: 17px; color: var(--i-blue); text-align: center; font-weight: 600; }
+
+.letter-paper {
+  background: #FFFFFF;
+  border: 2px solid rgba(83, 137, 245, .6);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+/* washi tape (violet) holding the letter shut */
+.letter-paper::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(2deg);
+  width: 96px;
+  height: 18px;
+  border-radius: 3px;
+  background: rgba(164, 83, 245, .38);
+  z-index: 2;
+}
+/* faint confetti dust at the corners */
+.letter-paper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle 4px at 24px 30px, rgba(245, 218, 83, .8) 98%, transparent),
+    radial-gradient(circle 4px at calc(100% - 26px) 52px, rgba(83, 229, 245, .8) 98%, transparent),
+    radial-gradient(circle 4px at 30px calc(100% - 42px), rgba(245, 83, 164, .7) 98%, transparent);
+}
+.letter-photo {
+  width: 100%;
+  max-height: 200px;
+  border-bottom: 2px solid var(--t-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.letter-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.letter-text {
+  font-family: var(--font-arabic);
+  font-size: clamp(20px, 5vw, 24px);
+  line-height: 1.9;
+  color: var(--text);
+  padding: 18px 10px;
+  text-align: right;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  cursor: pointer; /* tap to skip the typewriter */
+}
+.letter-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+}
+/* Sticker buttons in the letter's voice */
+.btn-close {
+  background: var(--t-blue); color: var(--i-blue);
+  border: 2px solid var(--c-blue);
+  border-radius: 22px; padding: 10px 22px; font-weight: 700;
+  transition: transform .16s ease;
+}
+.btn-again {
+  background: #fff; color: var(--i-violet);
+  border: 2px solid var(--c-violet);
+  border-radius: 22px; padding: 10px 22px; font-weight: 700;
+  transition: transform .16s ease;
+}
+.btn-close:active, .btn-again:active { transform: scale(0.95); }
+
+@media (prefers-reduced-motion: reduce) {
+  .letter-text { animation: none; }
+  .btn-close, .btn-again { transition: none; }
+}

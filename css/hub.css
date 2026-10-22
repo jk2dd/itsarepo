@@ -1,0 +1,155 @@
+/* hub.css — §Hub: "the rainbow table of gifts."
+   White cards, each wearing one voice of the spectrum. */
+
+.hub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 74px max(18px, var(--safe-left)) 24px max(18px, var(--safe-right));
+  gap: 18px;
+  height: 100%;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+  margin-top: 0;
+}
+.hub-intro { width: 100%; max-width: 900px; text-align: center; margin: 0 auto 2px; }
+.hub-kicker {
+  display: inline-block;
+  margin-bottom: 3px;
+  color: var(--i-violet);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.hub-heading {
+  font-family: var(--font-display);
+  color: var(--text);
+  font-size: clamp(25px, 5vw, 38px);
+  line-height: 1.15;
+}
+.hub-subtitle { color: var(--text-soft); font-size: 14px; margin-top: 6px; }
+@media (min-width: 768px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+}
+.card {
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 174px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.card:not(.locked):hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+}
+.card:not(.locked):active { transform: translateY(-1px) scale(.99); }
+.card:focus-visible { outline: 3px solid var(--c-violet); outline-offset: 3px; }
+.card.locked {
+  opacity: 0.6;
+  filter: grayscale(0.55);
+  cursor: default;
+}
+.card-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: var(--t-pink);
+  margin-bottom: 8px;
+}
+.card-icon svg { width: 36px; height: 36px; }
+.card-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.card-teaser {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.card-lock {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+}
+
+/* --- One spectrum voice per destination (red -> ... -> violet rotation) --- */
+.card-play {
+  border-color: rgba(245, 159, 83, .45);
+}
+.card-play:hover, .card-play:focus-visible { border-color: var(--c-orange); }
+.card-play .card-icon { background: var(--t-orange); }
+
+.card-us {
+  border-color: rgba(245, 94, 83, .45);
+}
+.card-us:hover, .card-us:focus-visible { border-color: var(--c-red); }
+.card-us .card-icon { background: var(--t-red); }
+
+.card-books {
+  border-color: rgba(83, 245, 110, .5);
+}
+.card-books:hover, .card-books:focus-visible { border-color: var(--c-green); }
+.card-books .card-icon { background: var(--t-green); }
+
+.card-favorites {
+  border-color: rgba(83, 229, 245, .5);
+}
+.card-favorites:hover, .card-favorites:focus-visible { border-color: var(--c-cyan); }
+.card-favorites .card-icon { background: var(--t-cyan); }
+
+.card-letter {
+  border-color: rgba(83, 137, 245, .5);
+}
+.card-letter:hover, .card-letter:focus-visible { border-color: var(--c-blue); }
+.card-letter .card-icon { background: var(--t-blue); }
+
+.card-celebrate {
+  border-color: rgba(164, 83, 245, .5);
+}
+.card-celebrate:hover, .card-celebrate:focus-visible { border-color: var(--c-violet); }
+.card-celebrate .card-icon { background: var(--t-violet); }
+
+.hub-msg {
+  margin-top: 14px;
+  font-size: 15px;
+  color: var(--i-violet);
+  font-weight: 600;
+  min-height: 22px;
+  text-align: center;
+}
+
+@media (max-width: 380px) {
+  .cards { gap: 11px; }
+  .card { min-height: 158px; padding: 14px 10px; }
+  .card-title { font-size: 18px; }
+  .card-teaser { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .card, .card:not(.locked):hover { transition: none; transform: none; }
+}
+
+/* Wide screens: countdown pill expanded (shell handles class; here ensure no clash) */
+@media (min-width: 768px) {
+  .countdown-pill.expanded { padding: 8px 18px; font-size: 15px; }
+}

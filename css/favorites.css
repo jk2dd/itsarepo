@@ -1,0 +1,555 @@
+/* favorites.css — "The garden of her taste":
+   rose garland, spinning vinyl, rose petals, draggable sticker collage,
+   polaroid galleries with spectrum voices. Lots of life, soft motion. */
+
+/* This section is long; it owns its own scrolling. */
+.section-favorites {
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fav {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 14px var(--safe-left) 28px var(--safe-right);
+  min-height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+/* local rose petals */
+.fav-petal {
+  position: absolute;
+  top: -20px;
+  width: var(--w, 12px);
+  height: calc(var(--w, 12px) * 0.82);
+  border-radius: 60% 40% 55% 50% / 50% 60% 45% 55%;
+  opacity: .45;
+  pointer-events: none;
+  z-index: 0;
+  animation: petalDrift linear infinite;
+}
+@keyframes petalDrift {
+  0%   { transform: translateY(-20px) rotate(0deg) translateX(0); }
+  50%  { transform: translateY(52vh) rotate(var(--r, 300deg)) translateX(3vw); }
+  100% { transform: translateY(112vh) rotate(var(--r, 300deg)) translateX(-2vw); }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero: garland + heading + vinyl player                              */
+/* ------------------------------------------------------------------ */
+.fav-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+.fav-garland { width: min(340px, 84vw); height: auto; margin-bottom: -4px; }
+.fav-garland .rose { animation: roseBob 5s ease-in-out infinite; transform-origin: center bottom; }
+.fav-garland .rose-2 { animation-delay: .5s; }
+.fav-garland .rose-3 { animation-delay: 1s; }
+.fav-garland .rose-4 { animation-delay: 1.5s; }
+.fav-garland .rose-5 { animation-delay: 2s; }
+@keyframes roseBob {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-3px) scale(1.06); }
+}
+
+.fav-kicker {
+  color: var(--i-pink);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.fav-heading {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 7vw, 34px);
+  color: var(--text);
+  text-align: center;
+  line-height: 1.15;
+}
+.fav-sub {
+  font-size: 14px;
+  color: var(--text-soft);
+  text-align: center;
+  max-width: 420px;
+}
+.fav.music-on .fav-heading { text-shadow: 0 0 0 transparent; }
+
+/* --- vinyl --- */
+.fav-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 2px solid var(--c-pink);
+  border-radius: 999px;
+  padding: 8px 12px;
+  margin-top: 6px;
+  box-shadow: var(--shadow);
+  animation: playerPulse 3.6s ease-in-out infinite;
+}
+@keyframes playerPulse {
+  0%, 100% { box-shadow: 0 14px 30px rgba(58, 42, 56, .1); }
+  50%      { box-shadow: 0 14px 34px rgba(245, 83, 164, .22); }
+}
+.vinyl { width: 46px; height: 46px; flex: none; border-radius: 50%; }
+.vinyl svg { width: 100%; height: 100%; display: block; }
+.vinyl.spinning svg { animation: spin 4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.fav-player-copy { display: flex; flex-direction: column; min-width: 0; }
+.fav-song-title {
+  font-size: 11px;
+  color: var(--text-soft);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.fav-song-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--i-pink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vinyl-btn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--t-pink);
+  border: 2px solid var(--c-pink);
+  color: var(--i-pink);
+  font-size: 17px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .16s ease;
+}
+.vinyl-btn:hover { transform: scale(1.08); }
+.vinyl-btn:active { transform: scale(0.94); }
+.vinyl-btn-track {
+  width: 30px;
+  height: 30px;
+  font-size: 15px;
+  background: var(--card);
+}
+.vinyl-btn-track:hover { transform: scale(1.12); }
+.fav-tapstart {
+  margin-top: 4px;
+  background: var(--t-yellow);
+  border: 2px solid var(--c-yellow);
+  color: var(--i-yellow);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  animation: wiggle 1.4s ease-in-out infinite;
+  box-shadow: var(--shadow);
+}
+
+/* +1 pink glow behind the hero when music is on */
+.fav.music-on::before {
+  content: '';
+  position: absolute;
+  inset: -40px -20px auto -20px;
+  height: 300px;
+  background: radial-gradient(60% 100% at 50% 0%, rgba(245, 83, 164, .14), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/* Collage board                                                       */
+/* ------------------------------------------------------------------ */
+.fav-collagen {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.fav-collage-sticker {
+  display: inline-block;
+  background: var(--t-violet);
+  border: 2px solid var(--c-violet);
+  color: var(--i-violet);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 4px 12px;
+  transform: rotate(-2deg);
+  margin: 0 0 10px 4px;
+}
+.fav-board {
+  position: relative;
+  height: 400px;
+  background:
+    repeating-linear-gradient(0deg, rgba(58,42,56,.05) 0 1px, transparent 1px 26px),
+    #FFFDF6;
+  border: 2px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.fav-sticker {
+  position: absolute;
+  width: 96px;
+  cursor: grab;
+  user-select: none;
+}
+.fav-sticker.big { width: 122px; }
+.fav-sticker.dragging { cursor: grabbing; }
+.fav-sticker-frame {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 18px rgba(58, 42, 56, .14);
+  border-radius: 4px;
+  padding: 5px 5px 16px;
+  transform: rotate(var(--r, 0deg));
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.fav-sticker.dragging .fav-sticker-frame { transform: rotate(0deg) scale(1.04); box-shadow: 0 16px 30px rgba(58, 42, 56, .2); }
+.fav-sticker img {
+  width: 100%;
+  height: 74px;
+  object-fit: cover;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.fav-sticker.big img { height: 100px; }
+.fav-sticker-tag {
+  position: absolute;
+  bottom: 1px;
+  left: 5px;
+  right: 5px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--i-pink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fav-sticker.wiggle { animation: wiggle .5s ease-in-out; }
+
+/* ------------------------------------------------------------------ */
+/* Cards (polaroid galleries)                                          */
+/* ------------------------------------------------------------------ */
+.fav-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 14px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+.fav-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 2px solid var(--line);
+  box-shadow: var(--shadow);
+  padding: 16px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+}
+/* spectrum voice per card (pink, violet, cyan, green, orange, blue, yellow) */
+.fav-card-fairuz  { border-color: rgba(245, 83, 164, .55); }
+.fav-card-ariana  { border-color: rgba(164, 83, 245, .55); }
+.fav-card-sewing  { border-color: rgba(83, 229, 245, .55); }
+.fav-card-crochet { border-color: rgba(83, 245, 110, .5); }
+.fav-card-pattern { border-color: rgba(245, 159, 83, .55); }
+.fav-card-wardrobe{ border-color: rgba(83, 137, 245, .55); }
+.fav-card-sweets  { border-color: rgba(245, 218, 83, .7); }
+
+/* little rose divider on top of each card */
+.fav-card::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 18px;
+  width: 46px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--t-pink);
+  transform: rotate(-3deg);
+}
+.fav-card-crochet::before { background: var(--t-green); }
+.fav-card-pattern::before { background: var(--t-orange); transform: rotate(3deg); left: auto; right: 18px; }
+.fav-card-sweets::before  { background: var(--t-yellow); }
+.fav-card-wardrobe::before{ background: var(--t-blue); }
+.fav-card-ariana::before  { background: var(--t-violet); }
+.fav-card-sewing::before  { background: var(--t-cyan); }
+
+.fav-card-head { display: flex; flex-direction: column; gap: 3px; }
+.fav-card-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--i-pink);
+}
+.fav-card-crochet .fav-card-kicker { color: var(--i-green); }
+.fav-card-pattern .fav-card-kicker { color: var(--i-orange); }
+.fav-card-sweets .fav-card-kicker  { color: var(--i-yellow); }
+.fav-card-wardrobe .fav-card-kicker{ color: var(--i-blue); }
+.fav-card-ariana .fav-card-kicker  { color: var(--i-violet); }
+.fav-card-sewing .fav-card-kicker  { color: var(--i-cyan); }
+.fav-card-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  color: var(--text);
+}
+.fav-card-caption { font-size: 13.5px; color: var(--text-soft); }
+
+.fav-card-photos {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.fav-pola {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(58, 42, 56, .12);
+  padding: 5px 5px 16px;
+  flex: 1 1 96px;
+  max-width: 150px;
+  transition: transform .2s ease, box-shadow .2s ease;
+  position: relative;
+}
+.fav-pola:hover { transform: translateY(-4px) rotate(-1deg); box-shadow: 0 14px 26px rgba(58, 42, 56, .18); }
+.fav-pola img {
+  width: 100%;
+  height: 118px;
+  object-fit: cover;
+  max-width: 100%;
+  border-radius: 2px;
+  display: block;
+}
+.fav-pola figcaption {
+  position: absolute;
+  bottom: 1px;
+  left: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--i-pink);
+}
+.fav-card-fairuz .fav-pola { transform: rotate(-1deg); }
+.fav-card-fairuz .fav-pola:nth-child(2n) { transform: rotate(2deg); }
+
+/* YouTube blocks inside cards */
+.fav-yts { display: flex; flex-direction: column; gap: 10px; }
+.fav-yt { display: flex; flex-direction: column; gap: 4px; }
+.fav-yt-video {
+  position: relative;
+  height: 150px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--t-pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fav-card-ariana .fav-yt-video { background: var(--t-violet); }
+.yt-facade {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform .18s ease;
+}
+.yt-facade:hover { transform: scale(1.02); }
+.yt-play {
+  width: 60px;
+  height: 46px;
+  background: var(--card);
+  color: var(--i-pink);
+  border: 2px solid currentColor;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  transform: translateX(4px);
+  box-shadow: 0 6px 16px rgba(58, 42, 56, .15);
+}
+.fav-card-ariana .yt-play { color: var(--i-violet); }
+.fav-yt-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--i-pink);
+}
+.fav-card-ariana .fav-yt-title { color: var(--i-violet); }
+
+/* ------------------------------------------------------------------ */
+/* Her Moments — her own photos, taped to a string of hearts           */
+/* ------------------------------------------------------------------ */
+.fav-her {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 2px solid rgba(164, 83, 245, .45);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 10px 14px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.fav-her::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 18px;
+  width: 46px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--t-violet);
+  transform: rotate(-3deg);
+}
+.fav-her-string { width: min(320px, 82vw); height: auto; margin-top: 2px; }
+.fav-her-string .pin { animation: roseBob 4.5s ease-in-out infinite; transform-origin: center top; }
+.fav-her-string .pin-2 { animation-delay: .6s; }
+.fav-her-string .pin-3 { animation-delay: 1.2s; }
+.fav-her-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--i-violet);
+}
+.fav-her-title { font-family: var(--font-display); font-size: 22px; color: var(--text); }
+.fav-her-sub { font-size: 13.5px; color: var(--text-soft); text-align: center; }
+
+.her-wall {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 10px;
+  margin-top: 8px;
+  width: 100%;
+}
+.her-pola {
+  margin: 0;
+  position: relative;
+  background: #fff;
+  border-radius: 3px;
+  padding: 5px 5px 0;
+  box-shadow: 0 10px 20px rgba(58, 42, 56, .16);
+  transform: rotate(var(--r, 0deg));
+  transition: transform .2s ease, box-shadow .2s ease;
+  cursor: pointer;
+}
+.her-pola:hover { transform: rotate(0deg) translateY(-4px) scale(1.02); box-shadow: 0 16px 28px rgba(58, 42, 56, .22); z-index: 2; }
+.her-pola.pop { animation: herPop .45s cubic-bezier(.34,1.56,.64,1); }
+@keyframes herPop {
+  0%   { transform: rotate(var(--r, 0deg)) scale(1); }
+  45%  { transform: rotate(-2deg) scale(1.06); }
+  100% { transform: rotate(var(--r, 0deg)) scale(1.02); }
+}
+.her-pola img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  display: block;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.her-pola.wide img { aspect-ratio: 16 / 11; }
+.her-pola.big { grid-column: 1 / -1; }
+.her-pola.big img { aspect-ratio: 4 / 4.2; }
+.her-pola.wide { grid-column: 1 / -1; }
+.her-tape {
+  position: absolute;
+  width: 34px;
+  height: 15px;
+  background: rgba(245, 179, 217, .6);
+  border: 1px solid rgba(117, 49, 83, .18);
+  box-shadow: 0 2px 5px rgba(58, 42, 56, .12);
+}
+.her-tape.t1 { top: -7px; left: -9px; transform: rotate(-28deg); }
+.her-tape.t2 { top: -7px; right: -9px; transform: rotate(26deg); background: rgba(211, 179, 245, .55); }
+.her-pola:nth-child(4n+2) .her-tape.t1 { background: rgba(179, 224, 245, .6); }
+.her-pola:nth-child(4n) .her-tape.t1 { background: rgba(245, 218, 179, .6); }
+.her-cap {
+  display: block;
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--i-violet);
+  padding: 4px 2px 6px;
+}
+.fav-her .fav-yt { margin-top: 12px; width: 100%; }
+.fav-her .fav-yt-video { background: var(--t-violet); height: 140px; border-radius: 12px; }
+.fav-her .yt-play { color: var(--i-violet); }
+.fav-her .fav-yt-title { color: var(--i-violet); }
+
+/* Anne's Corner (kept) */
+.anne {
+  margin-top: 4px;
+  padding: 16px 14px;
+  background: var(--t-green);
+  border: 2px solid var(--c-green);
+  border-radius: var(--radius);
+  text-align: center;
+  width: 100%;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
+}
+.anne::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 92px;
+  height: 18px;
+  border-radius: 3px;
+  background: rgba(245, 218, 83, .55);
+}
+.anne-title { font-family: var(--font-display); font-size: 18px; color: var(--text); margin-bottom: 10px; }
+.anne-svg { margin: 0 auto 10px auto; width: 90px; height: 90px; }
+.anne-note { font-size: 15px; color: var(--text); line-height: 1.6; }
+
+@media (min-width: 620px) {
+  .her-wall { grid-template-columns: repeat(4, 1fr); }
+  .her-pola.wide { grid-column: span 2; }
+  .her-pola.big { grid-column: span 2; }
+}
+
+@media (max-width: 480px) {
+  .fav-board { height: 330px; }
+  .fav-sticker { width: 74px; }
+  .fav-sticker.big { width: 96px; }
+  .fav-sticker img { height: 58px; }
+  .fav-sticker.big img { height: 78px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fav-petal, .vinyl.spinning svg, .fav-garland .rose, .fav-player, .fav-tapstart, .fav-her-string .pin, .her-pola { animation: none !important; }
+  .fav-tapstart { animation: none; }
+  .yt-facade, .vinyl-btn { transition: none; }
+  .fav-pola { transition: none; }
+}

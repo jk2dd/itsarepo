@@ -1,0 +1,366 @@
+/* gate.css — §Gate: "the knock at the door."
+   Gift-box lid on ivory with pink→red gradient ribbon.
+   Colors stay inside the Confetti Garden system. */
+
+:root {
+  --gate-ink: #3A2A38;
+  --gate-ink-soft: #8A6E7E;
+}
+
+.gate {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  background: var(--paper);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px var(--safe-left) 40px var(--safe-right);
+  overflow: hidden;
+}
+
+/* Keep the blobs for gate — pink/red biased via base.css hue-rotate. */
+body:has(.section-gate) .bg { opacity: 1; }
+
+/* Gift-box lid card */
+.gate-card {
+  position: relative;
+  width: min(92vw, 420px);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  padding: 44px 24px 30px;
+  box-shadow: var(--shadow-lift);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 1;
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* Ribbon across the top of the lid: pink→red gradient strip */
+.gate-ribbon {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 16px;
+  background: linear-gradient(90deg, var(--c-pink), var(--c-red));
+  border-bottom: 2px solid rgba(245, 83, 164, .4);
+  z-index: 2;
+  transform-origin: center;
+}
+
+/* Ribbon ends (tied bows) */
+.gate-ribbon::before,
+.gate-ribbon::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  width: 20px; height: 24px;
+  background: linear-gradient(90deg, var(--c-pink), var(--c-red));
+  border-radius: 50% 50% 0 0;
+  box-shadow: 0 4px 8px rgba(58, 42, 56, .12);
+}
+.gate-ribbon::before { left: 10px; }
+.gate-ribbon::after { right: 10px; }
+
+/* Ribbon "untied" state — rotates and fades */
+.gate-ribbon.untied {
+  animation: ribbonUntie .5s cubic-bezier(.22,.8,.35,1) forwards;
+}
+@keyframes ribbonUntie {
+  0%   { transform: rotate(0) scale(1); opacity: 1; }
+  100% { transform: rotate(12deg) scale(.6); opacity: 0; }
+}
+
+/* Split-open lid animation on success */
+.gate-card.open {
+  animation: lidOpen .6s cubic-bezier(.22,.8,.35,1) forwards;
+}
+@keyframes lidOpen {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(.96) translateY(-6px); opacity: .98; }
+  100% { transform: scale(1.02) translateY(0); opacity: 1; }
+}
+
+/* Greeting stickers — the funny gifs from assets/gifs/gif-on-home-page */
+.gate-stickers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 2px;
+}
+.gate-sticker {
+  display: block;
+  width: 88px;
+  height: 88px;
+  padding: 6px;
+  background: #fff;
+  border: 2px solid rgba(245, 83, 164, .4);
+  border-radius: 20px;
+  box-shadow: 0 8px 18px rgba(58, 42, 56, .1);
+  line-height: 0;
+  transform: rotate(-5deg);
+}
+.gate-sticker--coffee {
+  transform: rotate(3deg);
+  border-color: rgba(245, 94, 83, .4);
+}
+.gate-sticker--cat {
+  width: 70px;
+  height: 70px;
+  transform: rotate(-2deg);
+  border-color: rgba(83, 229, 245, .5);
+}
+.gate-sticker img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: stickerFloat 5s ease-in-out infinite;
+}
+.gate-sticker--coffee img { animation-duration: 6.2s; animation-delay: .8s; }
+.gate-sticker--cat img { animation-duration: 5.6s; animation-delay: 1.5s; }
+@keyframes stickerFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Typewriter greeting */
+.gate-greeting {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 10vw, 52px);
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: .02em;
+}
+.gate-greeting b {
+  color: var(--c-pink);
+}
+.gate-text {
+  font-family: var(--font-body);
+  font-size: clamp(15px, 4vw, 18px);
+  color: var(--text-soft);
+  max-width: 300px;
+  line-height: 1.6;
+  margin-bottom: 2px;
+}
+
+/* Name sticker */
+.gate-name {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--i-pink);
+  background: var(--t-pink);
+  border: 2px solid var(--c-pink);
+  border-radius: 999px;
+  padding: 3px 14px;
+  margin: 4px 0 10px;
+  transform: rotate(-3deg);
+  display: inline-block;
+}
+
+/* Actions row */
+.gate-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+/* Yes/No pills */
+.btn-welcome {
+  min-width: 130px;
+  padding: 14px 26px;
+  border: 2px solid var(--c-pink);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--i-pink);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease;
+  box-shadow: 0 2px 0 rgba(58, 42, 56, .04);
+}
+.btn-welcome:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(58, 42, 56, .12); border-color: var(--c-red); }
+.btn-welcome:active { transform: scale(0.96); }
+.btn-welcome.gave-up {
+  background: var(--t-red);
+  border-color: var(--i-red);
+  color: var(--i-red);
+}
+
+/* Secret step — password keypad in t-pink */
+.gate-secret-step {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: stepFade .4s ease;
+}
+@keyframes stepFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.gate-secret-step[hidden] { display: none; }
+
+.secret-card {
+  position: relative;
+  width: min(90vw, 380px);
+  background: var(--t-pink);
+  border: 2px solid var(--c-pink);
+  border-radius: 22px;
+  padding: 26px 18px 20px;
+  box-shadow: var(--shadow);
+  z-index: 1;
+}
+
+/* Keypad door plate look */
+.secret-keypad {
+  width: 100%;
+  max-width: 260px;
+  margin: 8px auto 4px;
+  text-align: center;
+}
+#gate-input {
+  width: 100%;
+  padding: 16px 12px;
+  font-size: 22px;
+  border: 2px solid var(--c-pink);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--text);
+  text-align: center;
+  font-family: var(--font-display);
+  letter-spacing: 3px;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+#gate-input::placeholder { color: rgba(58, 42, 56, 0.25); letter-spacing: 0; }
+#gate-input:focus { outline: 3px solid var(--c-violet); outline-offset: 3px; border-color: var(--c-pink); }
+#gate-input.shake { animation: inputShake .45s ease; }
+
+.secret-title {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 5vw, 26px);
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.secret-sub {
+  font-size: 14px;
+  color: var(--text-soft);
+  margin-bottom: 10px;
+}
+.gate-hint-gif {
+  max-width: 120px;
+  height: auto;
+  border-radius: 12px;
+  border: 2px solid var(--t-pink);
+  display: none;
+  background: #fff;
+  margin: 6px 0;
+}
+
+/* Hint sticker */
+.gate-msg {
+  min-height: 22px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--i-red);
+  margin-top: 4px;
+}
+.gate-msg.hint { color: var(--i-cyan); }
+
+/* Sticker buttons inside the card */
+.gate-secret .btn {
+  min-width: 44px;
+  height: 42px;
+  padding: 0 16px;
+  border-radius: 21px;
+  font-weight: 700;
+  font-size: 14px;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .16s ease;
+}
+.gate-secret .btn:active { transform: scale(0.95); }
+.btn-hint {
+  background: #fff;
+  border: 2px solid var(--c-pink);
+  color: var(--i-pink);
+  border-radius: 999px !important;
+}
+.btn-accept {
+  background: var(--c-red);
+  border: 2px solid var(--c-red);
+  color: #fff;
+  border-radius: 999px !important;
+  box-shadow: 0 10px 22px rgba(245, 94, 83, .35);
+}
+.btn-accept:hover { background: var(--i-red); border-color: var(--i-red); }
+
+.secret-back {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-top: 8px;
+  cursor: pointer;
+}
+.secret-back:hover { color: var(--c-pink); }
+
+@keyframes inputShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-7px); }
+  40%, 80% { transform: translateX(7px); }
+}
+
+/* Confetti drift after success */
+.gate-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+.gate-confetti .bit {
+  position: absolute;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--c-pink);
+  opacity: .7;
+  animation: confDrift 2.5s ease-out forwards;
+}
+@keyframes confDrift {
+  0%   { transform: translate(0, 0) scale(1); opacity: .7; }
+  100% { transform: translate(var(--tx, 0), var(--ty, 60vh)) scale(0) rotate(360deg); opacity: 0; }
+}
+
+/* "No thanks" runs away */
+.gate.is-running .btn-no { position: fixed; z-index: 60; }
+
+/* Small screens */
+@media (max-width: 480px) {
+  .gate-card { padding: 34px 16px 22px; width: min(94vw, 340px); }
+  .gate-greeting { font-size: clamp(26px, 11vw, 40px); }
+  .gate-sticker { width: 78px; height: 78px; }
+  .gate-sticker--cat { width: 62px; height: 62px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gate-card, .gate-ribbon, .gate-secret-step, #gate-input.shake { animation: none !important; }
+  .gate-ribbon.untied { animation: none; opacity: 0; transform: none; }
+  .gate-card.open { animation: none; transform: none; }
+  .gate-confetti .bit { animation: none; display: none; }
+  .btn-welcome:hover, .btn-welcome:active { transform: none; }
+  .gate-is-running .btn-no { position: static; }
+  .gate-sticker img { animation: none; }
+}
