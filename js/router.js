@@ -1,7 +1,7 @@
 // router.js - hash routes. Each section is its own JS module + CSS file.
 const SECTIONS = {
   gate: () => import('./sections/gate.js?v=14'),
-  hub: () => import('./sections/hub.js?v=8'),
+  hub: () => import('./sections/hub.js?v=9'),
   play: () => import('./sections/play.js?v=9'),
   us: () => import('./sections/us.js?v=9'),
   books: () => import('./sections/books.js?v=3'),
@@ -48,7 +48,7 @@ export const router = {
   _loadCSS(name) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'css/' + name + '.css?v=26';
+    link.href = 'css/' + name + '.css?v=28';
     link.dataset.section = name;
     document.head.appendChild(link);
     cssLinks.push(link);

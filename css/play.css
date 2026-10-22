@@ -246,6 +246,7 @@
 }
 .piece {
   position: absolute;
+  z-index: 1;
   overflow: hidden;
   border: 2px solid rgba(179, 146, 74, .66);
   border-radius: 4px;
@@ -260,8 +261,8 @@
   opacity: .94;
   box-shadow: 0 11px 23px rgba(58, 42, 56, .24);
 }
-.piece.home { border-color: #91b4a0; background: #fff; }
-.piece.selected { border-color: var(--play-lilac); background: #f5eff9; }
+.piece.home { border-color: #91b4a0; background-color: #fff; }
+.piece.selected { border-color: var(--play-lilac); background-color: #f5eff9; }
 .puzzle-progress {
   min-width: 74px;
   padding: 4px 12px;

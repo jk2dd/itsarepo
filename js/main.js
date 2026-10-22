@@ -6,7 +6,7 @@ import { CONFIG } from './config.js?v=7';
 import { time } from './time.js';
 import { audio } from './audio.js?v=5';
 import { petals } from './petals.js?v=2';
-import { router } from './router.js?v=21';
+import { router } from './router.js?v=23';
 
 const mount = document.getElementById('mount');
 const pill = document.getElementById('countdown-pill');
