@@ -2,7 +2,7 @@
 const SECTIONS = {
   gate: () => import('./sections/gate.js?v=14'),
   hub: () => import('./sections/hub.js?v=9'),
-  play: () => import('./sections/play.js?v=10'),
+  play: () => import('./sections/play.js?v=11'),
   us: () => import('./sections/us.js?v=9'),
   books: () => import('./sections/books.js?v=3'),
   favorites: () => import('./sections/favorites.js?v=15'),
@@ -31,12 +31,14 @@ export const router = {
     const mount = document.getElementById('mount');
     mount.innerHTML = '';
     try {
+      // Apply the section stylesheet first: sections measure their layout
+      // during init and must not race against a late-loading css file.
+      await this._loadCSS(name);
       const mod = await SECTIONS[name]();
       const el = document.createElement('div');
       el.className = 'section section-' + name;
       mount.appendChild(el);
       this.current = await mod.init(el, this.ctx);
-      this._loadCSS(name);
     } catch (e) {
       mount.innerHTML = '<div class="error" style="padding:2rem;text-align:center;color:var(--text)">Section failed to load.</div>';
       console.error(e);
@@ -48,10 +50,17 @@ export const router = {
   _loadCSS(name) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'css/' + name + '.css?v=28';
+    link.href = 'css/' + name + '.css?v=29';
     link.dataset.section = name;
+    const ready = new Promise((resolve) => {
+      link.addEventListener('load', resolve, { once: true });
+      link.addEventListener('error', resolve, { once: true });
+      // A missing or blocked stylesheet never holds the page hostage.
+      setTimeout(resolve, 1500);
+    });
     document.head.appendChild(link);
     cssLinks.push(link);
+    return ready;
   },
   _unloadCSS() {
     cssLinks.forEach((l) => l.remove());

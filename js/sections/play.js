@@ -113,17 +113,26 @@ function renderPuzzle(grid, ctx) {
     msgEl.className = 'play-msg ' + (kind || '');
   }
 
+  let layoutTries = 0;
+
   function layout() {
     const vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     const boardW = Math.min(Math.floor(vw * 0.92), 420);
     board.style.width = boardW + 'px';
     board.style.height = (boardW * (missingPhoto ? 1.05 : 2)) + 'px';
     requestAnimationFrame(() => {
+      const applied = parseFloat(getComputedStyle(board).borderLeftWidth) > 0;
+      if (!applied && layoutTries < 40) { layoutTries += 1; layout(); return; }
       const cells = board.querySelectorAll('.slot');
+      const cs = getComputedStyle(board);
+      // Pieces are absolutely positioned against the board's padding box, but
+      // slot rects are measured against the border box - account for the frame.
+      const offX = parseFloat(cs.borderLeftWidth) || 0;
+      const offY = parseFloat(cs.borderTopWidth) || 0;
       const br = board.getBoundingClientRect();
       slots = Array.from(cells).map((c) => {
         const r = c.getBoundingClientRect();
-        return { left: r.left - br.left, top: r.top - br.top, w: r.width, h: r.height };
+        return { left: r.left - br.left - offX, top: r.top - br.top - offY, w: r.width, h: r.height };
       });
       placeAll();
     });
@@ -147,11 +156,15 @@ function renderPuzzle(grid, ctx) {
     const el = document.createElement('div');
     el.className = 'piece';
     el.dataset.home = home;
+    // Inline these so a piece crops its slice even if play.css has not arrived yet.
+    el.style.position = 'absolute';
+    el.style.overflow = 'hidden';
     const image = document.createElement('img');
     image.src = imgSrc;
     image.alt = '';
     image.draggable = false;
     image.setAttribute('aria-hidden', 'true');
+    image.style.position = 'absolute';
     el.appendChild(image);
     el.style.touchAction = 'none';
     el.draggable = false;
@@ -187,8 +200,15 @@ function renderPuzzle(grid, ctx) {
   }
 
   const photoCheck = new Image();
+  let photoRetries = 0;
   photoCheck.onload = () => board.classList.remove('missing-photo');
   photoCheck.onerror = () => {
+    if (photoRetries < 2) {
+      photoRetries += 1;
+      // One failed fetch is not proof the photo is gone - try once more.
+      setTimeout(() => { photoCheck.src = imgSrc + '?r=' + photoRetries; }, 400);
+      return;
+    }
     if (missingPhoto) return;
     missingPhoto = true;
     board.classList.add('missing-photo');
