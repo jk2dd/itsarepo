@@ -2,7 +2,7 @@
 const SECTIONS = {
   gate: () => import('./sections/gate.js?v=14'),
   hub: () => import('./sections/hub.js?v=9'),
-  play: () => import('./sections/play.js?v=9'),
+  play: () => import('./sections/play.js?v=10'),
   us: () => import('./sections/us.js?v=9'),
   books: () => import('./sections/books.js?v=3'),
   favorites: () => import('./sections/favorites.js?v=15'),

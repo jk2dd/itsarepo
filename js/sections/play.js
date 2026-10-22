@@ -147,7 +147,12 @@ function renderPuzzle(grid, ctx) {
     const el = document.createElement('div');
     el.className = 'piece';
     el.dataset.home = home;
-    el.style.backgroundImage = 'url(' + imgSrc + ')';
+    const image = document.createElement('img');
+    image.src = imgSrc;
+    image.alt = '';
+    image.draggable = false;
+    image.setAttribute('aria-hidden', 'true');
+    el.appendChild(image);
     el.style.touchAction = 'none';
     el.draggable = false;
     return el;
@@ -160,8 +165,11 @@ function renderPuzzle(grid, ctx) {
     const h = slots[0] ? slots[0].h : board.clientHeight / 6;
     piece.el.style.width = w + 'px';
     piece.el.style.height = h + 'px';
-    piece.el.style.backgroundSize = (w * COLS) + 'px ' + (h * ROWS) + 'px';
-    piece.el.style.backgroundPosition = (-c * w) + 'px ' + (-r * h) + 'px';
+    const image = piece.el.querySelector('img');
+    image.style.width = (w * COLS) + 'px';
+    image.style.height = (h * ROWS) + 'px';
+    image.style.left = (-c * w) + 'px';
+    image.style.top = (-r * h) + 'px';
   }
 
   function place(piece) {

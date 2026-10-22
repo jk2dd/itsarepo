@@ -250,10 +250,15 @@
   overflow: hidden;
   border: 2px solid rgba(179, 146, 74, .66);
   border-radius: 4px;
-  background: #fffdf8;
+  background-color: #fffdf8;
   box-shadow: 0 3px 8px rgba(58, 42, 56, .15);
   cursor: grab;
   transition: border-color .16s ease, box-shadow .16s ease;
+}
+.piece img {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
 }
 .piece.dragging {
   z-index: 10;
@@ -261,8 +266,8 @@
   opacity: .94;
   box-shadow: 0 11px 23px rgba(58, 42, 56, .24);
 }
-.piece.home { border-color: #91b4a0; background-color: #fff; }
-.piece.selected { border-color: var(--play-lilac); background-color: #f5eff9; }
+.piece.home { border-color: #91b4a0; }
+.piece.selected { border-color: var(--play-lilac); }
 .puzzle-progress {
   min-width: 74px;
   padding: 4px 12px;
